@@ -38,11 +38,57 @@ public class OptimalStreamingHistograms {
         }
 
         for (int p = p1; p <= p2; p++) {
-            bins.add(new Coord(Math.pow(10, p), 0));
+            double rangeStart = Math.pow(10, p);
+            double increment = rangeStart / 10;
+            double rangeEnd = Math.pow(10, p + 1);
+            while (rangeStart < rangeEnd) {
+                bins.add(new Coord(rangeStart, 0));
+                rangeStart += increment;
+            }
         }
     }
 
     public void add(double v) {
+        int bin = getBin(v);
+        Coord coord = bins.get(bin);
+        coord.y += 1;
+    }
+
+    public double estimate(double a, double b) {
+        double estimate = 0;
+
+        int bin1 = getBin(a);
+        int bin2 = getBin(b);
+
+        Coord c1 = bins.get(bin1);
+        double upperBound = c1.x * 10;
+        double lowerBound = c1.x;
+        double ratio = (upperBound - a) / (upperBound - lowerBound);
+        double aToNext = ratio * c1.y;
+        estimate += aToNext;
+
+        bin1++;
+        while (bin1 < bin2) {
+            estimate += bins.get(bin1).y;
+            bin1++;
+        }
+
+        Coord c2 = bins.get(bin2);
+        upperBound = c2.x * 10;
+        lowerBound = c2.x;
+        ratio =  (b - lowerBound) / (upperBound - lowerBound);
+        double prevToB = ratio * c2.y;
+        estimate += prevToB;
+
+        return estimate;
+    }
+
+
+
+    /**
+     * Gets bin which contains given value
+     */
+    private int getBin(double v) {
         int bin = 0;
         for(int l=0, r=bins.size(); l < r; ) {
             bin = (l+r)/2;
@@ -56,12 +102,7 @@ public class OptimalStreamingHistograms {
                 }
             }
         }
-        Coord coord = bins.get(bin - 1);
-        coord.y += 1;
-    }
-
-    public void estimate(double a, double b) {
-
+        return bin > 0 ?  bin - 1 : 0;
     }
 
 }
