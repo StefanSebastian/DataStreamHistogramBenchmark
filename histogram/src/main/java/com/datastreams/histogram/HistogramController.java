@@ -4,7 +4,6 @@ package com.datastreams.histogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,17 +28,17 @@ public class HistogramController {
 
     @PostMapping("/nrh/add")
     @ResponseBody void nrHistAdd(double value) {
-        logger.info("nr hist add " + value);
+        //logger.info("nr hist add " + value);
         nrHist.add(value);
     }
 
     @PostMapping("/osh/add")
     @ResponseBody void osHistAdd(double value) {
-        logger.info("os hist add " + value);
+        //logger.info("os hist add " + value);
         osHist.add(value);
     }
 
-    @GetMapping("/nrh/estimate")
+    @PostMapping("/nrh/estimate")
     @ResponseBody Double nrHistEstimate(@RequestBody Bounds bounds) {
         return nrHist.estimate(bounds.getLowerBound(), bounds.getUpperBound());
     }
