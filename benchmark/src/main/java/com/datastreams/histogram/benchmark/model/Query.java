@@ -1,6 +1,8 @@
-package com.datastreams.histogram.benchmark;
+package com.datastreams.histogram.benchmark.model;
 
 /**
+ * Query sent to histogram application
+ *
  * @author stefansebii@gmail.com
  */
 public class Query {

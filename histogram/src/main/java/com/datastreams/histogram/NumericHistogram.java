@@ -162,11 +162,18 @@ public class NumericHistogram {
                 }
             }
         }
+        if (bin == bins.size()){
+            bin--;
+        }
+        if (bin == 0) {
+            bin++;
+        }
         int i = bin - 1;
+
 
         double mb = bins.get(i).y + ((bins.get(i + 1).y - bins.get(i).y) / (bins.get(i + 1).x - bins.get(i).x))
                 * (v - bins.get(i).x);
-        double s = ((bins.get(i + 1).y + mb) / 2) * ((v - bins.get(i).x) / (bins.get( + 1).x - bins.get(i).x));
+        double s = ((bins.get(i + 1).y + mb) / 2) * ((v - bins.get(i).x) / (bins.get(i + 1).x - bins.get(i).x));
         for (int j = 0; j < i; j++) {
             s += bins.get(j).y;
         }

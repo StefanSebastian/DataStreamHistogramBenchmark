@@ -1,0 +1,22 @@
+{
+	"nrOps": 1000000,
+	"queryChance": 0.01,
+	"lowerBound": 0,
+	"upperBound": 100
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 10010,
+        "averageReqTime": 3.0903096903096903,
+        "meanAbsError": 161535.87087434644,
+        "meanSquaredError": 52098973485.99509
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 10010,
+        "averageReqTime": 3.1463536463536466,
+        "meanAbsError": 161624.1365255699,
+        "meanSquaredError": 52131831979.90192
+    }
+]
