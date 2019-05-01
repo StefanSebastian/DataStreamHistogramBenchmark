@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author stefansebii@gmail.com
@@ -19,36 +20,31 @@ public class HistogramController {
     private NumericHistogram nrHist;
     private OptimalStreamingHistograms osHist;
 
-    public class Bounds {
-        double lowerBound;
-        double upperBound;
-    }
-
     @PostMapping("/init")
-    void init(@RequestBody Bounds bounds) {
+    @ResponseBody void init(@RequestBody Bounds bounds) {
         logger.info("Init called with bounds: " + bounds);
-        nrHist = new NumericHistogram(bounds.lowerBound, bounds.upperBound);
-        osHist = new OptimalStreamingHistograms(bounds.lowerBound, bounds.upperBound);
+        nrHist = new NumericHistogram(bounds.getLowerBound(), bounds.getUpperBound());
+        osHist = new OptimalStreamingHistograms(bounds.getLowerBound(), bounds.getUpperBound());
     }
 
     @PostMapping("/nrh/add")
-    void nrHistAdd(double value) {
+    @ResponseBody void nrHistAdd(double value) {
         nrHist.add(value);
     }
 
     @PostMapping("/osh/add")
-    void osHistAdd(double value) {
+    @ResponseBody void osHistAdd(double value) {
         osHist.add(value);
     }
 
     @GetMapping("/nrh/estimate")
-    Double nrHistEstimate(@RequestBody Bounds bounds) {
-        return nrHist.estimate(bounds.lowerBound, bounds.upperBound);
+    @ResponseBody Double nrHistEstimate(@RequestBody Bounds bounds) {
+        return nrHist.estimate(bounds.getLowerBound(), bounds.getUpperBound());
     }
 
     @PostMapping("/osh/estimate")
-    Double osHistEstimate(@RequestBody Bounds bounds) {
-        return osHist.estimate(bounds.lowerBound, bounds.upperBound);
+    @ResponseBody Double osHistEstimate(@RequestBody Bounds bounds) {
+        return osHist.estimate(bounds.getLowerBound(), bounds.getUpperBound());
     }
 
 }

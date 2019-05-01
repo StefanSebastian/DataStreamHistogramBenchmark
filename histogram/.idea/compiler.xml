@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="benchmark.main" target="1.8" />
+      <module name="benchmark.test" target="1.8" />
       <module name="histogram.main" target="1.8" />
       <module name="histogram.test" target="1.8" />
     </bytecodeTargetLevel>

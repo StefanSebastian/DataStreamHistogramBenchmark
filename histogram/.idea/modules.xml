@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/benchmark.iml" filepath="$PROJECT_DIR$/.idea/modules/benchmark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/benchmark.main.iml" filepath="$PROJECT_DIR$/.idea/modules/benchmark.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/benchmark.test.iml" filepath="$PROJECT_DIR$/.idea/modules/benchmark.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/histogram.iml" filepath="$PROJECT_DIR$/histogram.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/histogram.main.iml" filepath="$PROJECT_DIR$/.idea/modules/histogram.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/histogram.test.iml" filepath="$PROJECT_DIR$/.idea/modules/histogram.test.iml" />
