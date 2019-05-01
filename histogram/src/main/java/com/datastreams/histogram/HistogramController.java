@@ -29,11 +29,13 @@ public class HistogramController {
 
     @PostMapping("/nrh/add")
     @ResponseBody void nrHistAdd(double value) {
+        logger.info("nr hist add " + value);
         nrHist.add(value);
     }
 
     @PostMapping("/osh/add")
     @ResponseBody void osHistAdd(double value) {
+        logger.info("os hist add " + value);
         osHist.add(value);
     }
 

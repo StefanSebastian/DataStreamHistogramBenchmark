@@ -1,7 +1,12 @@
 package com.datastreams.histogram.benchmark;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,10 +23,12 @@ import java.util.Random;
 @Service
 public class BenchmarkEngine {
 
-    @Value("${kafka.nrh.topic.name")
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Value("${kafka.nrh.topic.name}")
     private String nrHistTopicName;
 
-    @Value("${kafka.osh.topic.name")
+    @Value("${kafka.osh.topic.name}")
     private String osHistTopicName;
 
     @Autowired
@@ -49,11 +56,17 @@ public class BenchmarkEngine {
     }
 
     public void uniformBenchmark() {
-        int nrOps = 1000000;
+        int nrOps = 100;
         double queryChance = 0.01;
-        Random random = new Random();
-        double lowerBound = 0; double upperBound = 100;
+        int lowerBound = 0; int upperBound = 100;
 
+        performBenchmark(nrHistTopicName, nrOps, queryChance, lowerBound, upperBound);
+        performBenchmark(osHistTopicName, nrOps, queryChance, lowerBound, upperBound);
+    }
+
+    public void performBenchmark(String topic, int nrOps, double queryChance, int lowerBound, int upperBound) {
+        logger.info("Performing benchmark " + topic + " " + nrOps);
+        Random random = new Random();
         // send init message
         sendInit(lowerBound, upperBound);
         Map<Integer, Integer> actualValues = new HashMap<>();
@@ -61,9 +74,10 @@ public class BenchmarkEngine {
             if (random.nextDouble() < queryChance) {
                 // generate and measure query
             } else {
-                int nr = getRandomNumberInRange(0, 100);
+                int nr = getRandomNumberInRange(lowerBound, upperBound);
                 addActual(actualValues, nr);
                 // generate kafka msg
+                kafkaTemplate.send(topic, String.valueOf(nr));
             }
 
         }
@@ -82,7 +96,7 @@ public class BenchmarkEngine {
                     .post(formBody)
                     .build();
 
-            Response response = httpClient.newCall(request).execute();
+            httpClient.newCall(request).execute();
         } catch (IOException e){
             e.printStackTrace();
         }

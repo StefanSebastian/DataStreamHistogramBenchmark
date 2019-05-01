@@ -64,7 +64,7 @@ public class NumericHistogram {
      *
      * @param v The data point to add to the histogram approximation.
      */
-    public void add(double v) {
+    public synchronized void add(double v) {
         // Binary search to find the closest bucket that v should go into.
         // 'bin' should be interpreted as the bin to shift right in order to accomodate
         // v. As a result, bin is in the range [0,N], where N means that the value v is
@@ -148,7 +148,7 @@ public class NumericHistogram {
         }
     }
 
-    public double sum(double v) {
+    private double sum(double v) {
         int bin = 0;
         for(int l=0, r=nusedbins; l < r; ) {
             bin = (l+r)/2;
@@ -174,7 +174,7 @@ public class NumericHistogram {
         return s;
     }
 
-    public double estimate(double a, double b) {
+    public synchronized double estimate(double a, double b) {
         return sum(b) - sum(a);
     }
 
