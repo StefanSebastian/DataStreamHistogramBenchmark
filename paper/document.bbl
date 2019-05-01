@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+
+\bibitem{Ben-Haim:2010:SPD:1756006.1756034}
+Y.~Ben-Haim and E.~Tom-Tov, ``A streaming parallel decision tree algorithm,''
+  {\em J. Mach. Learn. Res.}, vol.~11, pp.~849--872, Mar. 2010.
+
+\bibitem{Thusoo:2009:HWS:1687553.1687609}
+A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
+  P.~Wyckoff, and R.~Murthy, ``Hive: A warehousing solution over a map-reduce
+  framework,'' {\em Proc. VLDB Endow.}, vol.~2, pp.~1626--1629, Aug. 2009.
+
+\bibitem{HivePoweredBy}
+``Poweredby.''
+  \url{https://cwiki.apache.org/confluence/display/Hive/PoweredBy}.
+\newblock Accessed: 2019-05-01.
+
+\bibitem{HiveImplementation}
+``Numerichistogram.''
+  \url{https://github.com/apache/hive/blob/f37c5de6c32b9395d1b34fa3c02ed06d1bfbf6eb/ql/src/java/org/apache/hadoop/hive/ql/udf/generic/NumericHistogram.java}.
+\newblock Accessed: 2019-05-01.
+
+\end{thebibliography}

@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+
+\usepackage{url} % websites in bib
+\usepackage{hyperref}
+\usepackage[a4paper,left=1in,right=1in,top=1in,bottom=1in]{geometry} % margins
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{todonotes}
+\usepackage{float} % figure placement
+\usepackage[]{algorithm2e}
+
+\begin{document}
+	\title{A benchmark for histogram building algorithms of numeric streams}
+	\author{Stefan Sebastian, 242}
+	\date{}
+	\maketitle
+	
+	\newpage
+	\tableofcontents
+	\newpage
+
+	\section{Introduction}
+	Main goals 
+	Motivation 
+
+	\subsection{Histograms}
+	Short description of histograms use + why streaming 
+	
+	//todo reformulate, benahim2.1 A histogram is a set of B pairs (called bins) of real numbers {(p1,m1),...,(pB,mB)}, where B is a
+	preset constant integer. The histogram is a compressed and approximate representation of a set S
+	of real numbers
+
+
+	Paper structure
+
+	\section{Algorithms}
+	\section{Numeric Histogram}
+	\subsection{Overview}
+	The Numeric Histogram algorithm first appeared in the paper by Ben-Haim and Tom-Tov
+	on building a streaming parallel decision tree algorithm\cite{Ben-Haim:2010:SPD:1756006.1756034}.
+	The main focus was to describe a method for tree based classifiers for large data 
+	sets in a distributed environment, however they needed a data structure that 
+	can summarize large amounts of data accurately. Thus, they proposed a histogram 
+	data structure that can adapt to the requirements of a streaming environment. 
+
+	The histogram maintains a fixed number of bins of the shape (p, m) where 
+	p represents a central value of the interval and m the number of points in it.
+	Initially the histogram has some bins allocated but the values are not known. 
+	They are filled as data comes is added into the structure and once the allocated 
+	number of bins is reached the central bin values are updated depending on incoming
+	values. In this regard, the algorithm is robust to changes in data patterns over 
+	a longer period of time, which is one of the main concerns of streaming analysis 
+	algorithms.
+
+	\subsection{Procedures}
+	The proposed data structure contains four procedures: update, merge, sum and uniform.
+	But for the purpose of this benchmark only two were needed: update and sum. The update 
+	procedure adds a new point to the histogram data structure and is described in algorithm \ref{add}.
+
+	\begin{algorithm}
+		\label{add}
+		\KwData{histogram $h = {(p_1, m_1), .., (p_b, m_b)}$, a point p}
+		\KwResult{a histogram that represents the set $S \bigcup \{p\}$}
+		binary search for the closest $p_i$ larger than p\;
+		\eIf{$p_i = p$}{
+			$m_i = m_i + 1$\;
+		}{
+			add a new bin of shape (p, 1) to the histogram at the i-th position\;
+			find the closest two bins by their p values\;
+			merge those bins, moving p proportional to their m values\;  
+		}
+		\caption{add procedure}
+	\end{algorithm}
+
+	The sum procedure, depicted in algorithm \ref{sum}, obtains the estimated number of points between $(-\infty, n]$ where n is 
+	the input value. In order to estimate the number of values in a range $[a, b]$ we can calculate 
+	$sum(b) - sum(a)$. The algorithm assumes that for each bin (p, m), there are $m/2$ points to the left of p
+	and $m/2$ to the right. This means that the number of points in the interval $[p_i, i_{i+1}]$ is equal 
+	to $(m_i + m_{i+1}) / 2$, which is the area of the trapezoid $(p_i, 0), (p_i, m_i), (p_{i+1}, m_{i+1}), (p_{i+1}, 0)$, 
+	divided by $p_{i+1} - p_i$. Similarly, we can estimate the number of points in the 
+	interval $[p_i, p]$ by adding calculating its projection on the line from $(p_i, m_i)$ to
+	$(p_{i+1}, m_{i+1})$, then find the area of the new trapezoid and dividing again by $p_{i+1} - p_i$.
+	The algorithm will not work properly if the point p is smaller than $p_0$ or larger than 
+	$p_b$. For this reason the data structure should be initialized with a lower and upper bound
+	into which all incoming data should fit.
+
+	\begin{algorithm}
+		\label{sum}
+		\KwData{a histogram h, a point p such that $p_1 < p < p_b$}
+		\KwResult{estimated number of points in the interval $[-\infty, p]$}
+
+		binary search to find i such that $p_i <= p <= p_{i+1}$\;
+		set $s = (m_i + m_p) \cdot (b - p_i) / 2 \cdot (p_{i+1} - p_i) $\;
+		where $m_p = m_i + (m_{i+1} - m_i) \cdot (p - p_i) / (p_{i+1} - p_i)$\;
+
+		\For{$j < i$}{
+			$s = s + m_j$\;
+		}
+		$s = s + m_i / 2$\;
+		\caption{sum procedure}
+	\end{algorithm}
+
+	\subsection{In practice}
+	This algorithm was adapted and implemented into the open source project Apache 
+	Hive\cite{Thusoo:2009:HWS:1687553.1687609}, which is a datawarehouse solution 
+	built on top of Hadoop to provide data query and analysis methods. The project 
+	is used actively in industry, handling reporting tasks for large volumes of data,
+	for e.g. data produced by 435M monthly users of Chitika\cite{HivePoweredBy}.
+	The version of the algorithm presented in this report is based on the Hive 
+	implementation, called NumericHistogram\cite{HiveImplementation}. The optimal 
+	number of bins is left as a choice to the user, however the suggested range 
+	is between 20 and 80.
+
+
+	\subsection{Optimal Streaming Histograms}
+	TODO describe the algorithm from 
+	https://amplitude.com/blog/2014/08/06/optimal-streaming-histograms
+
+	\section{Benchmark}
+	TODO describe benchmark methodology
+	tests
+	results
+
+	\newpage
+	\bibliography{references}
+	\bibliographystyle{ieeetr}
+\end{document}

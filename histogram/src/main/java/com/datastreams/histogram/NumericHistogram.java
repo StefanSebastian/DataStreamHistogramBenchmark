@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
+ * The algorithm is taken from the hive implementation of the following paper:
+ * Yael Ben-Haim and Elad Tom-Tov, "A streaming parallel decision tree algorithm",
+ * J. Machine Learning Research 11 (2010), pp. 849--872.
+ *
+ * The sum method was implemented as described in the paper.
+ *
  * @author stefansebii@gmail.com
  */
 public class NumericHistogram {
@@ -27,6 +33,17 @@ public class NumericHistogram {
         nusedbins = 0;
         bins = null;
         prng = new Random();
+    }
+
+    /**
+     * Initialize histogram, add bounds in order to provide estimates for queries outside the range of the given
+     * values. Allocates a number of buckets that falls within the recommended values.
+     */
+    public NumericHistogram(double lowerBound, double upperBound) {
+        this();
+        allocate(40); // a number in the recommended range for the amount of bins
+        add(lowerBound);
+        add(upperBound);
     }
 
     /**
