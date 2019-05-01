@@ -6,4 +6,8 @@
 \contentsline {subsection}{\numberline {3.2}Procedures}{3}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}In practice}{4}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Optimal Streaming Histograms}{4}{subsection.3.4}
-\contentsline {section}{\numberline {4}Benchmark}{4}{section.4}
+\contentsline {subsection}{\numberline {3.5}Overview}{4}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Iterations}{5}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Algorithm}{5}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}Implementation}{5}{subsection.3.8}
+\contentsline {section}{\numberline {4}Benchmark}{6}{section.4}

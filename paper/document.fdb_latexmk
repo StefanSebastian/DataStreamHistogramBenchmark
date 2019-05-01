@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex document"] 1556714133 "document.aux" "document.bbl" "document" 1556714179
+["bibtex document"] 1556721318 "document.aux" "document.bbl" "document" 1556721598
   "C:/Program Files/MiKTeX 2.9/bibtex/bst/bibtex/ieeetr.bst" 1291867944 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "document.aux" 1556714178 2198 46807140a702b129539efbd27b9b1b51 "pdflatex"
-  "references.bib" 1556714120 1498 a234feec9533b2f2419ef311940df5e6 ""
+  "document.aux" 1556721597 2814 2c8f07b402660c946554f3b6681853a5 "pdflatex"
+  "references.bib" 1556719014 1692 91dc6a306c51e8af305c6bc117d42ce9 ""
   (generated)
   "document.bbl"
   "document.blg"
-["pdflatex"] 1556714174 "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.tex" "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.pdf" "document" 1556714179
+["pdflatex"] 1556721593 "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.tex" "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.pdf" "document" 1556721598
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233955448 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233955448 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1233955454 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -149,18 +149,18 @@
   "C:/Program Files/MiKTeX 2.9/tex/latex/xkeyval/xkeyval.sty" 1419274338 5114 9c1069474ff71dbc47d5006555e352d3 ""
   "C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map" 1553712350 83721 56dfc66f96b4bc7777806d83f0266370 ""
   "C:/Users/Sebi/AppData/Local/MiKTeX/2.9/miktex/data/le/pdftex/pdflatex.fmt" 1514991313 4061318 cd012003129c220a97bd2e1d4fba39b6 ""
-  "document.aux" 1556714178 2198 46807140a702b129539efbd27b9b1b51 "pdflatex"
-  "document.bbl" 1556714133 910 bc25666b1bc97a1170a48ec7c997a7c2 "bibtex document"
-  "document.out" 1556714178 509 2144fd6e7e6bfd89b794f3d008b3fe02 "pdflatex"
-  "document.tex" 1556714172 5512 d3019b236c61a8ce0e92f11c37f4b7f7 ""
-  "document.toc" 1556714178 669 63550a4ce4a3e3c0a33618e9f45d5723 "pdflatex"
-  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.aux" 1556714178 2198 46807140a702b129539efbd27b9b1b51 ""
-  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.tex" 1556714172 5512 d3019b236c61a8ce0e92f11c37f4b7f7 ""
+  "document.aux" 1556721597 2814 2c8f07b402660c946554f3b6681853a5 "pdflatex"
+  "document.bbl" 1556721318 1081 2060f9e962848e3e98bc9ebdaeb1bebb "bibtex document"
+  "document.out" 1556721597 754 a9e7081ac61f554d05f22c4230dee200 "pdflatex"
+  "document.tex" 1556721591 9944 4a1a4ef77d2d73e8a9127e547231c39b ""
+  "document.toc" 1556721597 974 8494da1c5103ca3c730cc83cd0191389 "pdflatex"
+  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.aux" 1556721597 2814 2c8f07b402660c946554f3b6681853a5 ""
+  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.tex" 1556721591 9944 4a1a4ef77d2d73e8a9127e547231c39b ""
   (generated)
-  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.pdf"
-  "document.toc"
   "document.aux"
-  "document.out"
-  "document.log"
+  "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.pdf"
   "document.pdf"
+  "document.toc"
+  "document.log"
+  "document.out"
   "e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.log"

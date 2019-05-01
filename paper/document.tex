@@ -115,8 +115,87 @@
 
 
 	\subsection{Optimal Streaming Histograms}
-	TODO describe the algorithm from 
-	https://amplitude.com/blog/2014/08/06/optimal-streaming-histograms
+	\subsection{Overview}
+	This algorithm was presented in a blog post\cite{OSHistograms} 
+	by an engineer from the Amplitude company. Therefore, it was developed 
+	with industry requirements in mind, and tested in realistic conditions 
+	before being published. The main challenge was to avoid storing gigantic 
+	amounts of streaming data and to uncover an optimal bucketing solution.
+	The key requirements they identified for the bucket boundaries were:
+	to be useful and reasonable for any range of data and to remain 
+	useful upon changes in data distribution.
+	
+	The algorithm was also designed with data visualization needs in mind. 
+	For this reason the buckets size and spacing have been thought out to 
+	look intuitive in a chart and be easy to interpret.
+
+	\subsection{Iterations}
+	In order to reach a satisfying solution they went through multiple iterations 
+	of the algorithm. The first one was to save the first 1000 distinct values 
+	on the stream and then make evenly spaced buckets using them. However, this 
+	method behaves poorly when distribution changes over time because the buckets 
+	are fixed. Also, this might have resolution issues when the distribution 
+	is skewed, for example: a lot of points in a small range of values. 
+	
+	The second technique was iterative merging of the closest values into buckets. 
+	This was done in order to solve the resolution problem. Basically, among the 
+	first 1000 values, the 2 closest ones are merged into a bucket. This process 
+	is repeated until only 50 buckets are left. This improves resolution, however 
+	it causes difficulties in interpreting the histograms as all buckets have 
+	different widths and the spacing seems arbitrary. 
+
+	\subsection{Algorithm}
+	The final form of the algorithm is to pre-create buckets on a logarithmic 
+	scale. This requires the user to know the boundaries of the incoming data, 
+	and then, using those bounds, to create buckets that have 10\% increments 
+	for every order of magnitude. For example, for the range 1 - 10, there will be 
+	buckets of size 0.1, for the range 10 - 100, of size 1 and so forth. This solves
+	the resolution issues because each value will be in a bucket in a 10\% range 
+	of its true value. The spacing issues are also solved, and data visualization
+	is easier and more intuitive. The fixed size of the buckets should not be a 
+	problem in this scheme, which should work with a variety of data set types.
+
+	\subsection{Implementation}
+	The blog post did not provide an implementation so a variant will be 
+	proposed in this report. The initialization step is done with a given 
+	lower and upper bound. The smallest power of 10 larger than the upper bound 
+	and the largest power of 10 smaller than the lower bound are found and 
+	for each value p between them 90 buckets of width $p / 10$ are created.
+
+	For the add procedure, the bucket is found using binary search which 
+	provides a logarithmic complexity. The bin is the incremented by 1 
+	for each addition. In order to estimate\ref{estimateOSH} the number of values in a range $ [a, b] $ 
+	two binary searches are performed, for the bin of a and the bin of b. We 
+	need to estimate the number of values in the range $[a, bUb]$, where bUb is the upper
+	bound of the bucket which contains a, and in the range $[bLb, b]$ where bLb is the
+	lower bound of the bucket which contains b. The approach is similar for both 
+	intervals, so only one will be described. In order to estimate the number 
+	of values in $[a, bUb]$, a ratio is calculated between the distance from 
+	a to the upper bound and the size of the bucket. This ratio is then multiplied 
+	with the number of values in the bucket. The values for the buckets contained 
+	in the range $ [bUb, bLb] $ are added as they are.
+	
+	\begin{algorithm}
+		\label{estimateOSH}
+		\KwData{a histogram h, two points a, b}
+		\KwResult{estimated number of points in the interval $[a, b]$}
+
+		estimate = 0\;
+		bin1 = getBin(a), bin2 = getBin(b)\;
+		$lowerBound = bin1.val$, $upperBound = lowerBound \cdot 10$\;
+		$ratio = (upperBound - a) / (upperBound - lowerBound)$\;
+		$estimate = estimate + ratio \cdot bin1.count$\;
+
+		\For{each bin from bin1 to bin2} {
+			$estimate = estimate + bin.count$
+		}
+
+		$lowerBound = bin2.val$, $upperBound = lowerBound \cdot 10$\;
+		$ratio = (b - lowerbound) / (upperBound - lowerBound)$\;
+		$estimate = estimate + ratio \cdot bin2.count$\;
+
+		\caption{Estimated number of points in range}
+	\end{algorithm}
 
 	\section{Benchmark}
 	TODO describe benchmark methodology

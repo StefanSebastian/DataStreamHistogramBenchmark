@@ -19,4 +19,9 @@ A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
   \url{https://github.com/apache/hive/blob/f37c5de6c32b9395d1b34fa3c02ed06d1bfbf6eb/ql/src/java/org/apache/hadoop/hive/ql/udf/generic/NumericHistogram.java}.
 \newblock Accessed: 2019-05-01.
 
+\bibitem{OSHistograms}
+``Optimal streaming histograms.''
+  \url{https://amplitude.com/blog/2014/08/06/optimal-streaming-histograms}.
+\newblock Accessed: 2019-05-01.
+
 \end{thebibliography}
