@@ -1,3 +1,5 @@
+-----------------------------------------------
+Uniform benchmark 
 {
 	"nrOps": 1000000,
 	"queryChance": 0.01,
@@ -18,5 +20,54 @@
         "averageReqTime": 3.1463536463536466,
         "meanAbsError": 161624.1365255699,
         "meanSquaredError": 52131831979.90192
+    }
+]
+
+---------------------------------------------
+Long tailed distribution
+{
+	"nrOps": 1000000,
+	"queryChance": 0.01,
+	"lowerBound": 0,
+	"upperBound": 100
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 10088,
+        "averageReqTime": 6.305015860428232,
+        "meanAbsError": 102856.86282584262,
+        "meanSquaredError": 23614668551.877472
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 10088,
+        "averageReqTime": 4.815523394131642,
+        "meanAbsError": 103477.74271816676,
+        "meanSquaredError": 23626580730.173706
+    }
+]
+-------------------------------------
+Time varying distribution
+{
+	"nrOps": 1000000,
+	"queryChance": 0.01,
+	"lowerBound": 0,
+	"upperBound": 100
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 9884,
+        "averageReqTime": 3.4503237555645487,
+        "meanAbsError": 52115.065615987834,
+        "meanSquaredError": 5385128831.693005
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 9884,
+        "averageReqTime": 3.1310198300283285,
+        "meanAbsError": 51968.426565777736,
+        "meanSquaredError": 5344437433.663632
     }
 ]

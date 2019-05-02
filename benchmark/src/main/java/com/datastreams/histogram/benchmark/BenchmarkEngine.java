@@ -1,9 +1,6 @@
 package com.datastreams.histogram.benchmark;
 
-import com.datastreams.histogram.benchmark.model.BenchmarkAction;
-import com.datastreams.histogram.benchmark.model.BenchmarkReport;
-import com.datastreams.histogram.benchmark.model.BenchmarkStats;
-import com.datastreams.histogram.benchmark.model.Query;
+import com.datastreams.histogram.benchmark.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 import org.slf4j.Logger;
@@ -39,21 +36,83 @@ public class BenchmarkEngine {
     /**
      * Perform the uniform benchmark
      */
-    public List<BenchmarkReport> uniformBenchmark(BenchmarkStats stats) {
-        int nrOps = stats.getNrOps();
-        double queryChance = stats.getQueryChance();
-        int lowerBound = stats.getLowerBound(); int upperBound = stats.getUpperBound();
-
-        List<BenchmarkAction> benchmarkActions = generateBenchmark(stats);
-        BenchmarkReport report1 = performBenchmark(nrHistTopicName, benchmarkActions, stats);
-        BenchmarkReport report2 = performBenchmark(osHistTopicName, benchmarkActions, stats);
+    public List<BenchmarkReport> performBenchmark(BenchmarkStats stats, Benchmark benchmark) {
+        List<BenchmarkAction> benchmarkActions = new LinkedList<>();
+        if (benchmark.equals(Benchmark.Uniform)) {
+            benchmarkActions = generateUniformBenchmark(stats);
+        } else if (benchmark.equals(Benchmark.LongTailed)) {
+            benchmarkActions = generateLongTailedBenchmark(stats);
+        } else if (benchmark.equals(Benchmark.TimeVarying)) {
+            benchmarkActions = generateTimeVaryingBenchmark(stats);
+        }
+        BenchmarkReport report1 = performActions(nrHistTopicName, benchmarkActions, stats);
+        BenchmarkReport report2 = performActions(osHistTopicName, benchmarkActions, stats);
         List<BenchmarkReport> reports = new LinkedList<>();
         reports.add(report1);
         reports.add(report2);
         return reports;
     }
 
-    public List<BenchmarkAction> generateBenchmark(BenchmarkStats stats) {
+    public List<BenchmarkAction> generateLongTailedBenchmark(BenchmarkStats stats) {
+        List<BenchmarkAction> actions = new LinkedList<>();
+
+        // head should contain 80% of the values from 20% of the range
+        BenchmarkStats statsHead = new BenchmarkStats();
+        statsHead.setLowerBound(stats.getLowerBound());
+        int headUpperBound = stats.getLowerBound() + (int)((stats.getUpperBound() - stats.getLowerBound()) * 0.2);
+        statsHead.setUpperBound(headUpperBound);
+        statsHead.setQueryChance(stats.getQueryChance());
+        int headNrOps = (int)(stats.getNrOps() * 0.8);
+        statsHead.setNrOps(headNrOps);
+
+        // tail should contain 20% of the values from 80% of the range
+        BenchmarkStats statsTail = new BenchmarkStats();
+        statsTail.setLowerBound(headUpperBound);
+        statsTail.setUpperBound(stats.getUpperBound());
+        statsTail.setQueryChance(stats.getQueryChance());
+        statsTail.setNrOps(stats.getNrOps() - headNrOps);
+
+        actions.addAll(generateUniformBenchmark(statsHead));
+        actions.addAll(generateUniformBenchmark(statsTail));
+
+        return actions;
+    }
+
+    /**
+     * The value range changes 2 times at uniform intervals
+     */
+    public List<BenchmarkAction> generateTimeVaryingBenchmark(BenchmarkStats stats) {
+        List<BenchmarkAction> actions = new LinkedList<>();
+
+        BenchmarkStats first = new BenchmarkStats();
+        first.setLowerBound(stats.getLowerBound());
+        int firstUpperBound = stats.getLowerBound() + (int)((stats.getUpperBound() - stats.getLowerBound()) * 0.33);
+        first.setUpperBound(firstUpperBound);
+        first.setQueryChance(stats.getQueryChance());
+        int nrOps = (int)(stats.getNrOps() * 0.33); // approx a third of operations
+        first.setNrOps(nrOps);
+
+        BenchmarkStats second = new BenchmarkStats();
+        second.setLowerBound(firstUpperBound);
+        int secondUpperBound = stats.getLowerBound() + (int)((stats.getUpperBound() - stats.getLowerBound()) * 0.66);
+        second.setUpperBound(secondUpperBound);
+        second.setQueryChance(stats.getQueryChance());
+        second.setNrOps(nrOps);
+
+        BenchmarkStats third = new BenchmarkStats();
+        third.setLowerBound(secondUpperBound);
+        third.setUpperBound(stats.getUpperBound());
+        third.setQueryChance(stats.getQueryChance());
+        third.setNrOps(nrOps);
+
+        actions.addAll(generateUniformBenchmark(first));
+        actions.addAll(generateUniformBenchmark(second));
+        actions.addAll(generateUniformBenchmark(third));
+
+        return actions;
+    }
+
+    public List<BenchmarkAction> generateUniformBenchmark(BenchmarkStats stats) {
         List<BenchmarkAction> actions = new LinkedList<>();
 
         Random random = new Random();
@@ -80,7 +139,7 @@ public class BenchmarkEngine {
         return actions;
     }
 
-    public BenchmarkReport performBenchmark(String topic, List<BenchmarkAction> actions, BenchmarkStats stats) {
+    public BenchmarkReport performActions(String topic, List<BenchmarkAction> actions, BenchmarkStats stats) {
         // reset queries
         List<Query> queries = new LinkedList<>();
         // send init message
@@ -105,7 +164,7 @@ public class BenchmarkEngine {
         double abserror = 0;
         for (Query query : queries) {
             time += query.getDuration();
-            sqerror += (query.getActual() - query.getEstimated()) * (query.getActual() - query.getEstimated());
+            sqerror += ((query.getActual() - query.getEstimated()) * (query.getActual() - query.getEstimated()));
             abserror += Math.abs(query.getActual() - query.getEstimated());
         }
 
