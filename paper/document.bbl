@@ -1,18 +1,4 @@
-\begin{thebibliography}{1}
-
-\bibitem{Ben-Haim:2010:SPD:1756006.1756034}
-Y.~Ben-Haim and E.~Tom-Tov, ``A streaming parallel decision tree algorithm,''
-  {\em J. Mach. Learn. Res.}, vol.~11, pp.~849--872, Mar. 2010.
-
-\bibitem{Thusoo:2009:HWS:1687553.1687609}
-A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
-  P.~Wyckoff, and R.~Murthy, ``Hive: A warehousing solution over a map-reduce
-  framework,'' {\em Proc. VLDB Endow.}, vol.~2, pp.~1626--1629, Aug. 2009.
-
-\bibitem{HivePoweredBy}
-``Poweredby.''
-  \url{https://cwiki.apache.org/confluence/display/Hive/PoweredBy}.
-\newblock Accessed: 2019-05-01.
+\begin{thebibliography}{10}
 
 \bibitem{HiveImplementation}
 ``Numerichistogram.''
@@ -22,6 +8,35 @@ A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
 \bibitem{OSHistograms}
 ``Optimal streaming histograms.''
   \url{https://amplitude.com/blog/2014/08/06/optimal-streaming-histograms}.
+\newblock Accessed: 2019-05-01.
+
+\bibitem{DataStreamsHistograms}
+S.~Guha, N.~Koudas, and K.~Shim, ``Data-streams and histograms,'' in {\em
+  Proceedings of the Thirty-third Annual ACM Symposium on Theory of Computing},
+  STOC '01, (New York, NY, USA), pp.~471--475, ACM, 2001.
+
+\bibitem{Ben-Haim:2010:SPD:1756006.1756034}
+Y.~Ben-Haim and E.~Tom-Tov, ``A streaming parallel decision tree algorithm,''
+  {\em J. Mach. Learn. Res.}, vol.~11, pp.~849--872, Mar. 2010.
+
+\bibitem{HistogramExample}
+``Histograms.''
+  \url{https://statistics.laerd.com/statistical-guides/understanding-histograms.php}.
+\newblock Accessed: 2019-05-04.
+
+\bibitem{DataStreams}
+``What is data streaming?.''
+  \url{https://dzone.com/articles/what-is-data-streaming}.
+\newblock Accessed: 2019-05-01.
+
+\bibitem{Thusoo:2009:HWS:1687553.1687609}
+A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
+  P.~Wyckoff, and R.~Murthy, ``Hive: A warehousing solution over a map-reduce
+  framework,'' {\em Proc. VLDB Endow.}, vol.~2, pp.~1626--1629, Aug. 2009.
+
+\bibitem{HivePoweredBy}
+``Poweredby.''
+  \url{https://cwiki.apache.org/confluence/display/Hive/PoweredBy}.
 \newblock Accessed: 2019-05-01.
 
 \bibitem{errormetrics}

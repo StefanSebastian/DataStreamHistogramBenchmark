@@ -23,18 +23,82 @@
 	\newpage
 
 	\section{Introduction}
-	Main goals 
-	Motivation 
-
-	\subsection{Histograms}
-	Short description of histograms use + why streaming 
+	The main goal of this paper is to provide a benchmark for algorithms 
+	that build histograms over continuous streams of numeric data. 
+	The main goals of the benchmark is to measure both performance 
+	and accuracy in conditions resembling real streams of data: large 
+	volumes, varying data distribution, concurrent additions and queries.
+	The benchmark is implemented as a separate application which generates 
+	data and communicates with the histogram clients using Kafka streams 
+	and http requests for queries. It is applied over two algorithms taken
+	from practical industry-tested environments: the Numeric Histogram\cite{HiveImplementation} from 
+	the Apache Hive project and the Optimal Streaming Histogram from the Amplitude's 
+	company blog\cite{OSHistograms}. The algorithms provide different approaches 
+	to solving the main issues of stream bucketing algorithms, enuntiated above, 
+	however, after being put through the benchmark they seem to behave very similarly
+	in terms of execution times and approximation error.
 	
-	//todo reformulate, benahim2.1 A histogram is a set of B pairs (called bins) of real numbers {(p1,m1),...,(pB,mB)}, where B is a
-	preset constant integer. The histogram is a compressed and approximate representation of a set S
-	of real numbers
+	\subsection{Histograms}
+	A histogram is a type of plot that shows the underlying distirbution of a set of 
+	data\cite{DataStreamsHistograms}. In this paper the actual meaning of the term is the data structure out of 
+	which this plot can be built. An example of such a plot can be seen in figure \ref{histogram}.
+	The main use of such methods is to provide a quick and easy to interpret summary 
+	of the data, which can then be analyzed by a domain expert to aid in various 
+	business decisions. The supporting data structure can also be used by other 
+	more complex algorithms. For example, Bel-Haim et al.\cite{Ben-Haim:2010:SPD:1756006.1756034}
+	proposed an algorithm for classification of streaming data which leverages histograms 
+	for obtaining a light weight summary of the incoming data.
+	
+	Most algorithms and mehtods for building histograms are thought out with the presumption 
+	that the data set is known in advance and has a reasonable size. 
+	However, this does not hold in the case of data 
+	streams, where data is accumulated over time in huge volumes, 
+	which causes a number of issues for the classic algorithms. First of all, 
+	the size of the data can be gigantic, meaning that it is not reasonable to 
+	store each point and its occurences, and an approximation heuristic is required.
+	Furthermore, the distribution of the data is unknown beforehand, and this 
+	can cause issues if we can't properly store incoming data. Given the limitation
+	of the first point, the algorithm needs to keep a limited number of buckets, but these 
+	must not be fixed in the beginning because the values represented by the buckets might not
+	be relevant if the distribution of the data changes over time. Finally, these algorithms 
+	must be able to absorb data and perform queries constantly, meaning that performance is 
+	also an important factor.
 
+	A mathematical model for this data structure can be described as: a set of B pairs (called bins)
+	of the form ${(p_1, m_1), .., (p_B, m_B)}$. The value of the m variables represent the number 
+	of points observed for the p variables. The meaning of the p variables depends upon the bucketing 
+	algorithm. For example, in the Ben-Haim's algorithm\cite{Ben-Haim:2010:SPD:1756006.1756034},
+	p represents a central point for the interval and m the number of values around it. In the 
+	second algorithm discussed in the paper $p_i$ represents the lower bound of the considered interval,
+	with the upper bound being the the value of $p_{i+1}$.
+	
+	\begin{figure}[H]
+		\label{histogram}
+		\caption{Example of a histogram showing the frequency of age data\cite{HistogramExample}}
+		\centering
+		  \includegraphics[width=0.5\textwidth]{histogram.png}
+	\end{figure}
 
-	Paper structure
+	\subsection{Motivation}
+	The field of data streams has been evolving at a very fast rate in order 
+	to match the explosion in continuous sources of data: user activity logs,
+	web application metrics, sensor data from various domains like traffic or 
+	healthcare \cite{DataStreams}. Given this recent development, a lot of 
+	algorithms that were designed for batch processing do not perform so well 
+	in a streaming environment. A class of such algorithms are the ones used 
+	to build histogram models. There is little research in this domain which 
+	causes developers to come out with their own in-house methods for the task.
+	This article aims to contribute to the development of the field, to 
+	provide a comparison of the currently available algorithms and a baseline 
+	with which to compare future stream histogram methods.  
+
+	\subsection{Paper outline}
+	The paper is organized in four main chapters. The first, contains an introduction 
+	into the topic and summarizes the goals of the experiment. The second chapter 
+	describes the algorithms which were put under the benchmark, providing snippets 
+	of implementation and covering advantages and disadvantages. The next chapter 
+	covers the benchmarking client, the methodology and the test results. Finally,
+	the conclusion provides a short overview of the experiment and final results.
 
 	\section{Algorithms}
 	\subsection{Numeric Histogram}
@@ -269,7 +333,7 @@
 		\caption{Architectural diagram of the benchmarking application}
 		\centering
 		  \includegraphics[width=0.8\textwidth]{diagram.png}
-	  \end{figure}
+	\end{figure}
 
 	\subsection{Tests and results}
 	TODO 
