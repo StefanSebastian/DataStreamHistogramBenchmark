@@ -336,10 +336,127 @@
 	\end{figure}
 
 	\subsection{Tests and results}
-	TODO 
+	The benchmark contains tests that can be divided into two main categories:
+	for performance and for accuracy. The accuracy tests are designed to cover 
+	some distribution which might appear over time on a data stream. The first 
+	such distribution is uniform, which 
+	is the simplest one and should not cause any issues. A second test in this 
+	category is with a skewed distribution, where the first 80\% of operations 
+	cover the first 20\% of the value range and the rest 20\% of the operations 
+	cover the remaining range. A third scenario for the value range to change 
+	twice at a third and two thirds of the testing interval. These last two scenarios 
+	are designed to test the ability of the algorithm to adapt to changes in 
+	the distribution of the incoming data stream.
+
+	The performance oriented tests are focused on testing the system under 
+	a lot of queries, which tends to be the most costly operation. Another 
+	situation is with a large range of possible data values, which means 
+	that in case of dynamic bucketing, the values might have to change 
+	more often as the chance of the same value arriving multiple times is 
+	reduced.
+
+	A special test case was designed to point out a weakness of the 
+	OptimalStreamingHistogram in its current form, which uses a small 
+	range of large values (1000000, 1000100).
+
+	\begin{table}[h!]
+		\begin{center}
+		  \caption{Uniform distribution; 1mil operations, 1\% of them queries, bounds (0, 100)}
+		  \label{tab:uniform}
+		  \begin{tabular}{c|c|c|c}
+			\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+			\hline
+			NumericHistogram & 3.09 & 161536 & 52098973486 \\
+			OptimalStreamingHistogram & 3.14 & 161624 & 52131831979 \\			
+		  \end{tabular}
+	    \end{center}
+    \end{table}
+
+
+	\begin{table}[h!]
+		\begin{center}
+			\caption{Skewed distribution; 1mil operations, 1\% of them queries, bounds (0, 100)}
+			\label{tab:uniform}
+			\begin{tabular}{c|c|c|c} 
+				\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+				\hline
+				NumericHistogram & 6.30 & 102856 & 23614668551 \\
+				OptimalStreamingHistogram & 4.81 & 103477 & 23626580730 \\
+			\end{tabular}
+		\end{center}
+	\end{table}
+			
+	\begin{table}[h!]
+		\begin{center}
+			\caption{Twice changing distribution; 1mil operations, 1\% of them queries, bounds (0, 100)}
+			\label{tab:uniform}
+			\begin{tabular}{c|c|c|c}
+				\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+				\hline
+				NumericHistogram & 3.45 & 52115 & 5385128831 \\
+				OptimalStreamingHistogram & 3.13 & 51968 & 5344437433 \\
+		  \end{tabular}
+		\end{center}
+	\end{table}
+
+	\begin{table}[h!]
+		\begin{center}
+			\caption{Uniform distribution; 1mil operations, 1\% of them queries, bounds (0, 100000)}
+			\label{tab:uniform}
+			\begin{tabular}{c|c|c|c}
+				\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+				\hline
+				NumericHistogram & 3.44 & 166381 & 54802576827 \\
+				OptimalStreamingHistogram & 3.03 & 166345 & 54665682814 \\
+		  \end{tabular}
+		\end{center}
+	\end{table}
+
+	\begin{table}[h!]
+		\begin{center}
+			\caption{Uniform distribution; 1mil operations, 90\% of them queries, bounds (0, 100)}
+			\label{tab:uniform}
+			\begin{tabular}{c|c|c|c}
+				\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+				\hline
+				NumericHistogram & 3.37 & 16356 & 535437528 \\
+				OptimalStreamingHistogram & 2.83 & 16350 & 534797489 \\
+		  \end{tabular}
+		\end{center}
+	\end{table}
+
+	\begin{table}[h!]
+		\begin{center}
+			\caption{Uniform distribution; 1mil operations, 1\% of them queries, bounds (1000000, 1000100)}
+			\label{tab:uniform}
+			\begin{tabular}{c|c|c|c}
+				\textbf{Algorithm} & \textbf{Avg Req Time} & \textbf{MAE} & \textbf{MSE}\\
+				\hline
+				NumericHistogram & 3.39 & 160078 & 50782133935 \\
+				OptimalStreamingHistogram & 3.04 & 491258 & 321320234951 \\
+		  \end{tabular}
+		\end{center}
+	\end{table}
+
+	We can observe that both algorithms behave surprinsingly similar in all test cases. 
+	The average response time seems to be very close for all tests, at around 3 milliseconds for 
+	tests which consider 1 million elements, with NumericHistogram being just a bit slower.	
+	An exception is the skewed distribution test case where OptimalStreamingHistogram is 
+	around 2 milliseconds faster than the other algorithm.
+	
+	The last scenario points out the weakness of the OptimalStreamingHistogram,
+	which lies in the way the buckets are built. For a small range of large 
+	values most of them fall into the same bucket, which causes the algorithm 
+	to give inaccurate responses. It can be seen that the error is around 3 
+	times larger than that of the NumericHistogram algorithm.
 
 	\section{Conclusions}
-	TODO
+	The main goal of creating a benchmark for various scenarios of data stream 
+	bucketing was achieved. The benchmark was executed for two popular algorithms 
+	in the field and uncovered the fact that they behave very similar. A noticeable 
+	difference is when using large values, which causes the OptimalStreamingHistogram algorithm 
+	to give out inaccurate responses. In terms of speed NumericHistogram seems to 
+	be slightly slower than the other algorithm.
 
 	\newpage
 	\bibliography{references}

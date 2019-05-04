@@ -71,3 +71,75 @@ Time varying distribution
         "meanSquaredError": 5344437433.663632
     }
 ]
+-------------------------------------------------
+wide data range
+{
+	"nrOps": 1000000,
+	"queryChance": 0.01,
+	"lowerBound": 0,
+	"upperBound": 100000
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 9922,
+        "averageReqTime": 3.443862124571659,
+        "meanAbsError": 166381.47191222667,
+        "meanSquaredError": 54802576827.05135
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 9922,
+        "averageReqTime": 3.036686151985487,
+        "meanAbsError": 166345.5056730856,
+        "meanSquaredError": 54665682814.21948
+    }
+]
+--------------------------------------------------
+lots of queries
+{
+	"nrOps": 1000000,
+	"queryChance": 0.9,
+	"lowerBound": 0,
+	"upperBound": 100
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 899776,
+        "averageReqTime": 3.371719183441212,
+        "meanAbsError": 16356.019509339605,
+        "meanSquaredError": 535437528.63279426
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 899776,
+        "averageReqTime": 2.8316625471228396,
+        "meanAbsError": 16350.773992805774,
+        "meanSquaredError": 534797489.21815026
+    }
+]
+----------------------------------------------------
+large values for bounds
+{
+	"nrOps": 1000000,
+	"queryChance": 0.01,
+	"lowerBound": 1000000,
+	"upperBound": 1000100
+}
+[
+    {
+        "algorithm": "nrh",
+        "nrQueries": 9950,
+        "averageReqTime": 3.3937688442211056,
+        "meanAbsError": 160078.46030721648,
+        "meanSquaredError": 50782133935.38753
+    },
+    {
+        "algorithm": "osh",
+        "nrQueries": 9950,
+        "averageReqTime": 3.047035175879397,
+        "meanAbsError": 491258.97699882404,
+        "meanSquaredError": 321320234951.6901
+    }
+]
