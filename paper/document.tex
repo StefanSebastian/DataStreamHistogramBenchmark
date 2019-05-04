@@ -6,6 +6,7 @@
 
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{commath}
 
 \usepackage{todonotes}
 \usepackage{float} % figure placement
@@ -36,8 +37,8 @@
 	Paper structure
 
 	\section{Algorithms}
-	\section{Numeric Histogram}
-	\subsection{Overview}
+	\subsection{Numeric Histogram}
+	\subsubsection{Overview}
 	The Numeric Histogram algorithm first appeared in the paper by Ben-Haim and Tom-Tov
 	on building a streaming parallel decision tree algorithm\cite{Ben-Haim:2010:SPD:1756006.1756034}.
 	The main focus was to describe a method for tree based classifiers for large data 
@@ -54,7 +55,7 @@
 	a longer period of time, which is one of the main concerns of streaming analysis 
 	algorithms.
 
-	\subsection{Procedures}
+	\subsubsection{Procedures}
 	The proposed data structure contains four procedures: update, merge, sum and uniform.
 	But for the purpose of this benchmark only two were needed: update and sum. The update 
 	procedure adds a new point to the histogram data structure and is described in algorithm \ref{add}.
@@ -102,7 +103,7 @@
 		\caption{sum procedure}
 	\end{algorithm}
 
-	\subsection{In practice}
+	\subsubsection{In practice}
 	This algorithm was adapted and implemented into the open source project Apache 
 	Hive\cite{Thusoo:2009:HWS:1687553.1687609}, which is a datawarehouse solution 
 	built on top of Hadoop to provide data query and analysis methods. The project 
@@ -115,7 +116,7 @@
 
 
 	\subsection{Optimal Streaming Histograms}
-	\subsection{Overview}
+	\subsubsection{Overview}
 	This algorithm was presented in a blog post\cite{OSHistograms} 
 	by an engineer from the Amplitude company. Therefore, it was developed 
 	with industry requirements in mind, and tested in realistic conditions 
@@ -129,7 +130,7 @@
 	For this reason the buckets size and spacing have been thought out to 
 	look intuitive in a chart and be easy to interpret.
 
-	\subsection{Iterations}
+	\subsubsection{Iterations}
 	In order to reach a satisfying solution they went through multiple iterations 
 	of the algorithm. The first one was to save the first 1000 distinct values 
 	on the stream and then make evenly spaced buckets using them. However, this 
@@ -144,7 +145,7 @@
 	it causes difficulties in interpreting the histograms as all buckets have 
 	different widths and the spacing seems arbitrary. 
 
-	\subsection{Algorithm}
+	\subsubsection{Algorithm}
 	The final form of the algorithm is to pre-create buckets on a logarithmic 
 	scale. This requires the user to know the boundaries of the incoming data, 
 	and then, using those bounds, to create buckets that have 10\% increments 
@@ -155,7 +156,7 @@
 	is easier and more intuitive. The fixed size of the buckets should not be a 
 	problem in this scheme, which should work with a variety of data set types.
 
-	\subsection{Implementation}
+	\subsubsection{Implementation}
 	The blog post did not provide an implementation so a variant will be 
 	proposed in this report. The initialization step is done with a given 
 	lower and upper bound. The smallest power of 10 larger than the upper bound 
@@ -175,7 +176,7 @@
 	with the number of values in the bucket. The values for the buckets contained 
 	in the range $ [bUb, bLb] $ are added as they are.
 	
-	\begin{algorithm}
+	\begin{algorithm}[H]
 		\label{estimateOSH}
 		\KwData{a histogram h, two points a, b}
 		\KwResult{estimated number of points in the interval $[a, b]$}
@@ -198,9 +199,83 @@
 	\end{algorithm}
 
 	\section{Benchmark}
-	TODO describe benchmark methodology
-	tests
-	results
+	This paper proposes a benchmark for histogram building algorithms 
+	over continuous data streams. The benchmark aims to address some 
+	issues which are specific to these types of problems: a large amount 
+	of data, which is usually not practical to store, varying distribution 
+	of data, meaning the algorithms must adapt to changes and have an 
+	efficient bucketing algorithm, and the mixing of input and queries from 
+	multiple channels, which means an ideal algorithm would have little overhead 
+	for doing multiple operations concurrently.
+
+	\subsection{Metrics}
+	The benchmark contains several test suites which attempt to cover all these 
+	situations. It is run as a separate application which communicates with 
+	the histogram building applications through a stream of data to be added, 
+	and a list of queries over the input data. The metrics measured are: average 
+	request time, mean squared error and mean absolute error.
+
+	Average request time represents the cumulated execution time of all queries 
+	divided with the number of queries. The time is measured by the benchmarking 
+	application from the moment the query request is sent to the moment the answer 
+	is received. This metric aims to measure algorithm performance and might 
+	also indicate issues with concurrency, caused by attempting to perform 
+	queries while the algorithm also performs additions from the input stream.
+	
+	Mean absolute error\cite{errormetrics} is defined as $ MAE = \frac{1}{n} \cdot \sum \abs{y - \hat{y}} $
+	and it's one of the simplest regression metrics. It calculates the residual for 
+	every query result compared to actual expected answer and takes the absolute 
+	value so that positive and negative values don't cancel each other out.
+
+	Mean squared error\cite{errormetrics} can be calculated as $ MSE = \frac{1}{n}
+	\sum (y - \hat{y})^2 $. It is similar to MAE, however it instead squares the difference.
+	The main consequence of squaring the difference is that MSE is more sensitive 
+	to outliers in the results, because the error grows quadratically. Thus, the model 
+	is punished more if it makes predictions which are far from the expected value.
+
+	\subsection{Implementation}
+	For this benchmark two histogram algorithms with proven practical results 
+	were implemented in the Java programming language using the libraries 
+	provided by the Spring Boot framework. 
+	The aforementioned algorithms are the Numeric Histogram\cite{HiveImplementation} 
+	from the Hive project and Optimal Streaming Histogram\cite{OSHistograms} developed 
+	by software engineers from Amplitude. The algorithms are contained in a standalone 
+	application which provides two input channels: a HTTP Rest API and a Kafka reader.
+
+	The application API exposes methods for initializing the bucketing algorithms, 
+	which requires the expected range into which the data will fall, and methods 
+	for queries. A query is of the type 'approximately how many points were observed
+	in the given range?' and in realistic scenarios they are used for statistics 
+	and data mining processes started by users and don't come into the application 
+	as a continuous stream. Apache Kafka\cite{Kafka} is a distributed streaming platform
+	used for building real time data pipelines with strong fault-tolerance guarantees.
+	This message queue was selected to model incoming data streams, which, in this 
+	case represent values to be added into the histogram.
+
+	The benchmarking component runs as a separate Spring Boot application which 
+	exposes an API that starts the different available benchmarks. The user 
+	can provide some parameters: which benchmark to perform, how many operations, 
+	what's the ratio of queries to additions, and which are the bounds of the data that is 
+	generated. An overlook of the architecture is given in figure \ref{architecture}.
+	The entry point is the BenchmarkController which reads from the user a list of 
+	parameters, contained in the stats class. The actual work is done by the BenchmarkEngine
+	which generates a list of actions, executes them, records response times and query values 
+	and then generates a report for each algorithm in the system. Input data for the 
+	histogram algorithms is sent through a Kafka queue, on a different topic for each 
+	algorithm.
+
+	\begin{figure}
+		\label{architecture}
+		\caption{Architectural diagram of the benchmarking application}
+		\centering
+		  \includegraphics[width=0.8\textwidth]{diagram.png}
+	  \end{figure}
+
+	\subsection{Tests and results}
+	TODO 
+
+	\section{Conclusions}
+	TODO
 
 	\newpage
 	\bibliography{references}

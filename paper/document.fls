@@ -50,10 +50,12 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/amssymb.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/amssymb.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/amsfonts.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/amsfonts/amsfonts.sty
-INPUT C:/Program Files/MiKTeX 2.9/tex/latex/todonotes/todonotes.sty
-INPUT C:/Program Files/MiKTeX 2.9/tex/latex/todonotes/todonotes.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/commath/commath.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/commath/commath.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ifthen.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/ifthen.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/todonotes/todonotes.sty
+INPUT C:/Program Files/MiKTeX 2.9/tex/latex/todonotes/todonotes.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/xkeyval/xkeyval.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/xkeyval/xkeyval.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/generic/xkeyval/xkeyval.tex
@@ -236,6 +238,11 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 OUTPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.toc
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmbx12.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmti12.tfm
+INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/diagram.png
+INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/diagram.png
+INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/diagram.png
+INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/diagram.png
+INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/diagram.png
 INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.bbl
 INPUT e:/Info/Facultate/Master-anu2/FluxuriDeDate/histograms/paper/document.bbl
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmtt12.tfm

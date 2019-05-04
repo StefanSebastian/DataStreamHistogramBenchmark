@@ -24,4 +24,12 @@ A.~Thusoo, J.~S. Sarma, N.~Jain, Z.~Shao, P.~Chakka, S.~Anthony, H.~Liu,
   \url{https://amplitude.com/blog/2014/08/06/optimal-streaming-histograms}.
 \newblock Accessed: 2019-05-01.
 
+\bibitem{errormetrics}
+A.~Botchkarev, ``Performance metrics (error measures) in machine learning
+  regression, forecasting and prognostics: Properties and typology,'' 09 2018.
+
+\bibitem{Kafka}
+N.~Garg, {\em Apache Kafka}.
+\newblock Packt Publishing, 2013.
+
 \end{thebibliography}
