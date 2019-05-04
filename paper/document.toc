@@ -12,8 +12,9 @@
 \contentsline {subsubsection}{\numberline {2.2.2}Iterations}{6}{subsubsection.2.2.2}
 \contentsline {subsubsection}{\numberline {2.2.3}Algorithm}{6}{subsubsection.2.2.3}
 \contentsline {subsubsection}{\numberline {2.2.4}Implementation}{7}{subsubsection.2.2.4}
-\contentsline {section}{\numberline {3}Benchmark}{7}{section.3}
+\contentsline {subsubsection}{\numberline {2.2.5}Remarks}{7}{subsubsection.2.2.5}
+\contentsline {section}{\numberline {3}Benchmark}{8}{section.3}
 \contentsline {subsection}{\numberline {3.1}Metrics}{8}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Implementation}{8}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Tests and results}{9}{subsection.3.3}
-\contentsline {section}{\numberline {4}Conclusions}{10}{section.4}
+\contentsline {section}{\numberline {4}Conclusions}{11}{section.4}

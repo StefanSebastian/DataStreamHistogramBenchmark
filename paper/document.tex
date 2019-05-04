@@ -178,6 +178,9 @@
 	number of bins is left as a choice to the user, however the suggested range 
 	is between 20 and 80.
 
+	The algorithm is adaptable and can work with any ranges of data, however 
+	the access to its underlying structure must be synchronized which 
+	slows down execution in case of concurrent queries and insertions.
 
 	\subsection{Optimal Streaming Histograms}
 	\subsubsection{Overview}
@@ -262,6 +265,13 @@
 		\caption{Estimated number of points in range}
 	\end{algorithm}
 
+	\subsubsection{Remarks}
+	In the current iteration this algorithm has some weak points. The main 
+	issue is that buckets are fixed before execution, which means that 
+	the building algorithm should be adapted to incoming data. For example, 
+	the algorithm currently does not support negative numbers and performs 
+	poorly for small ranges of very large values as illustrated in the benchmark.
+	
 	\section{Benchmark}
 	This paper proposes a benchmark for histogram building algorithms 
 	over continuous data streams. The benchmark aims to address some 
